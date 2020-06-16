@@ -50,6 +50,10 @@ trait Responders {
 // paths and constant names below are incorreect because I didnt make a dir structure yet, but I propose the following file paths / class names as derived from the file path:
 // e.g. Responders/UsersController/IndexResponder -> className: IndexResponder;
 
+// below are the responder objects that will contain all the methods which execute the necessary statements for controller actions
+
+// Responders ->
+
 // filepath: App\Responders\UsersController\IndexResponder
 class UserControllerIndexResponder {
     public function fetchUsers() 
