@@ -96,6 +96,10 @@ class BaseController {
         );
     }
 
+    private function respondWith($args) {
+        return ['response' => $args];
+    }
+
     private function currentAction() 
     {
         // to test
