@@ -1,13 +1,7 @@
 <?php 
 
 
-// spl_autoload_register(function ($unfoundClassName) {
-//     {
-//         $newClass = new class{}; //create an anonymous class
-//         $newClassName = get_class($newClass); //get the name PHP assigns the anonymous class
-//         class_alias($newClassName, $unfoundClassName); //alias the anonymous class with your class name
-//     }
-
+// Disregard, this was some work potentially for the job processing refactor
 
 class IRLParentJob {
     public function handleJob ($className)
