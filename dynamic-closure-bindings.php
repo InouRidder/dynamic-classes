@@ -113,7 +113,7 @@ class UserController extends BaseController {
     public function index() 
     {
         $users = $this->sanitizeUsers($this->fetchUsers());
-        // $this->respondWith($users);
+        $this->respondWith($users);
     }
 
     public function create() 
