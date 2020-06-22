@@ -1,5 +1,8 @@
 <?php 
 // The main idea for this pattern is to clean up controller actions and extract logic into their own contained classes which are easy to unit test.
+// Secondary goal is to abstract bulk of code from controller actions but maintain readability, this is done by calling functions from the 
+// controller actions, but defining those functions in the responder class related to that action
+
 // The controller action should only call well named methods, so that the language is very clear for the user.
 // the actions should live in an object called a responder, which responds to a request.
 
@@ -18,23 +21,35 @@ trait Responders {
             if (preg_match('|__|', $method) || !$reflect->isPublic()) {
                 continue;
             }
-            
-            $class = get_class($this) . $method ."Responder";
-            $obj = new $class();
-            $this->availableResponders[$method] = $obj;
+
+            try {
+                $class = get_class($this) . $method ."Responder";
+                $obj = new $class();
+                $this->availableResponders[$method] = $obj;
+            } catch (Error $e) {
+                // If there is no responder found for that class, continue;
+                // if methods are called that are expected, the Method does not exist error
+                // should be descriptive enough to find out that a responder was not defined
+                continue;
+            }
         }
     }
     
     
     public function __call($method, $args)
     {
-        $responder = $this->availableResponders[$this->currentAction()];
+        // if method is accessable in class, then run that method
+        if (isset($method) && $method instanceof Closure) {
+            return call_user_func_array($method, $args);
+        } 
         
-        if (isset($this->$method) && $this->$method instanceof Closure) {
-            return call_user_func_array($this->$method, $args);
-        } elseif (method_exists($responder, $method)) {
+        // If not accessable from within class, see if the related responder can respond
+        $responder = $this->availableResponders[$this->currentAction()];
+        if ($responder && method_exists($responder, $method)) {
             return $responder->{$method}($args);
         }
+
+        // else throw an error
         // In laravel this would be a custom laravel error
         throw new Exception("Method does not exist");
     }
@@ -65,11 +80,6 @@ class UserControllerIndexResponder {
     {
         echo("SANITIZING USERS \n");
     }
-}
-
-// filepath: App\Responders\UsersController\IndexResponder
-class UserControllerShowResponder {
-    
 }
 
 // filepath: App\Responders\UsersController\IndexResponder
