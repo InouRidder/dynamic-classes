@@ -166,3 +166,4 @@ $controller->index();
 // FETCHING ALL THE USERS
 // SANITIZING USERS
 
+// Catches: no non-action public methods in controllers
