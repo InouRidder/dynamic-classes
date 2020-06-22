@@ -82,7 +82,7 @@ class UserControllerIndexResponder {
     }
 }
 
-// filepath: App\Responders\UsersController\IndexResponder
+// filepath: App\Responders\UsersController\CreateResponder
 class UserControllerCreateResponder {
     public function createUser($params) 
     {
@@ -95,7 +95,7 @@ class UserControllerCreateResponder {
     }
 }
 
-// filepath: App\Responders\UsersController\IndexResponder
+// filepath: App\Responders\UsersController\UpdateResponder
 class UserControllerUpdateResponder {
     public function updateUser($params) 
     {
@@ -136,6 +136,7 @@ class UserController extends BaseController {
 
     public function show($id) 
     {
+        // No responder for this action
         $user = $this->findUser($id);
         $this->respondWith($user);
     }
